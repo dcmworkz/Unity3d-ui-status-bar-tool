@@ -11,20 +11,22 @@ public class StatusDisplays : MonoBehaviour
     public int maxMana = 1000;
     public int currentMana = 1000;
 
-    [SerializeField] MainStatusBar _statusBar = null;
+    [SerializeField] private MainStatusBar _statusBar = null;
+    [SerializeField] private MainStatusBar _quantityStatusBar = null;
 
     // Use this for initialization
-    void Start()
+    private void Start()
     {
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (currentHealth > 0)
             currentHealth--;
 
         _statusBar.UpdateStatusBar(currentHealth, maxHealth);
+        _quantityStatusBar.UpdateStatusBar(currentHealth, maxHealth);
     }
 
     public void OnClick_SetCurrentTo100()
