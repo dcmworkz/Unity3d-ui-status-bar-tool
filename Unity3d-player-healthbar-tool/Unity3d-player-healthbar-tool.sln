@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2017
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity3d-player-healthbar-tool", "Unity3d-player-healthbar-tool.csproj", "{52D7D199-A982-F537-4167-23DC2C78E4DE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity3d-player-healthbar-tool.Editor", "Unity3d-player-healthbar-tool.Editor.csproj", "{FF66886B-A451-4FB9-50DD-4579FDBE9F63}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{52D7D199-A982-F537-4167-23DC2C78E4DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52D7D199-A982-F537-4167-23DC2C78E4DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52D7D199-A982-F537-4167-23DC2C78E4DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52D7D199-A982-F537-4167-23DC2C78E4DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF66886B-A451-4FB9-50DD-4579FDBE9F63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF66886B-A451-4FB9-50DD-4579FDBE9F63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF66886B-A451-4FB9-50DD-4579FDBE9F63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF66886B-A451-4FB9-50DD-4579FDBE9F63}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
