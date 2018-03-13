@@ -26,17 +26,18 @@ namespace Lairinus.UI.Status
         public bool enableDebugging { get { return _enableDebugging; } set { _enableDebugging = value; } }
         public Image.FillMethod fillMethod { get { return _simpleFill_FillMethod; } set { _simpleFill_FillMethod = value; } }
         public int fillOrigin { get { return _fillOrigin; } set { _fillOrigin = value; } }
-        public float lastingValueUpdateRate { get { return simpleFill_LastingValueUpdateRate; } }
+        public float lastingValueUpdateRate { get { return _lingeringValueSpeed; } }
 
         public List<Sprite> separateSprites = new List<Sprite>();
         public Sprite quantityIcon { get { return _quantityIcon; } set { _quantityIcon = value; } }
         public string separationText { get { return _separationText; } set { _separationText = value; } }
-        public bool showLingeringValue { get { return _showLastingValue; } set { _showLastingValue = value; } }
+        public bool showLingeringValue { get { return _showLingeringValue; } set { _showLingeringValue = value; } }
         public StatusBarType statusBarType { get { return _statusBarType; } set { _statusBarType = value; } }
-        public TextDisplayType statusTextDisplayType { get { return _statusTextDisplayType; } }
+        public TextDisplayType statusTextDisplayType { get { return _statusTextDisplayType; } set { _statusTextDisplayType = value; } }
         public Image valueImage { get { return _currentValueImage; } set { _currentValueImage = value; } }
         public Image valueLingeringImage { get { return _lingeringValueImage; } set { _lingeringValueImage = value; } }
         public Text valueText { get { return _valueText; } set { _valueText = value; } }
+        public float lingeringValueSpeed { get { return _lingeringValueSpeed; } set { _lingeringValueSpeed = value; } }
 
         public void UpdateStatusBar(float currentValue, float maxValue)
         {
@@ -78,12 +79,12 @@ namespace Lairinus.UI.Status
         [SerializeField] private Image _lingeringValueImage = null;
         [SerializeField] private Sprite _quantityIcon = null;
         [SerializeField] private string _separationText = "x";
-        [SerializeField] private bool _showLastingValue = false;
+        [SerializeField] private bool _showLingeringValue = false;
         [SerializeField] private Image.FillMethod _simpleFill_FillMethod = Image.FillMethod.Horizontal;
         [SerializeField] private StatusBarType _statusBarType = StatusBarType.SimpleFill;
         [SerializeField] private TextDisplayType _statusTextDisplayType = TextDisplayType.CurrentValue;
         [SerializeField] private Text _valueText = null;
-        [SerializeField] private float simpleFill_LastingValueUpdateRate = 0;
+        [SerializeField] private float _lingeringValueSpeed = 0;
 
         private void Quantity_UpdateValue(float currentValue, float maxValue, float currentPercentage)
         {
@@ -172,7 +173,7 @@ namespace Lairinus.UI.Status
              * -------------------------
              * Directly updates the value of the lingering value bar
              */
-            if (_showLastingValue)
+            if (_showLingeringValue)
             {
                 if (_lingeringValueImage == null && _enableDebugging)
                 {
@@ -189,16 +190,24 @@ namespace Lairinus.UI.Status
                 if (_lingeringValueImage.fillOrigin != _fillOrigin)
                     _lingeringValueImage.fillOrigin = _fillOrigin;
 
-                if (currentPercentage > 0)
+                if (currentPercentage >= 0)
                 {
-                    if (currentPercentage > _lastLingeringPercentage)
-                        _lastLingeringPercentage += Time.deltaTime + simpleFill_LastingValueUpdateRate;
+                    float finalSpeed = Time.deltaTime;
+                    if (_lingeringValueSpeed != 0)
+                        finalSpeed *= _lingeringValueSpeed;
+
+                    if (currentPercentage >= _lastLingeringPercentage)
+                        _lastLingeringPercentage = currentPercentage;
                     else if (currentPercentage < _lastLingeringPercentage)
-                        _lastLingeringPercentage -= Time.deltaTime - simpleFill_LastingValueUpdateRate;
+                        _lastLingeringPercentage -= finalSpeed;
                 }
-                else _lastLingeringPercentage = 0;
 
                 _lingeringValueImage.fillAmount = _lastLingeringPercentage;
+            }
+            else
+            {
+                if (_lingeringValueImage != null)
+                    _lingeringValueImage.fillAmount = 0;
             }
         }
 

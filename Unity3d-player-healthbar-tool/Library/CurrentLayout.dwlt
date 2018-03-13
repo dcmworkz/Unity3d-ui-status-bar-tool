@@ -89,7 +89,7 @@ MonoBehaviour:
   m_MinSize: {x: 709, y: 492}
   m_MaxSize: {x: 18004, y: 14042}
   vertical: 0
-  controlID: 95
+  controlID: 9
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -133,7 +133,7 @@ MonoBehaviour:
   m_MinSize: {x: 434, y: 492}
   m_MaxSize: {x: 14004, y: 14042}
   vertical: 1
-  controlID: 96
+  controlID: 67
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -209,7 +209,7 @@ MonoBehaviour:
   m_MinSize: {x: 434, y: 271}
   m_MaxSize: {x: 14004, y: 10021}
   vertical: 0
-  controlID: 97
+  controlID: 105
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -365,18 +365,18 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets/Demo/HealthBarSprites
+    - Assets/Scripts/Lairinus.UI.Status
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/Demo/HealthBarSprites
+  - Assets/Scripts/Lairinus.UI.Status
   m_LastFoldersGridSize: 16
-  m_LastProjectPath: D:\__Unity\GitHub Projects\Unity3d-player-healthbar-tool\Unity3d-player-healthbar-tool
+  m_LastProjectPath: D:\__Unity\GitHub Projects\Unity3d-player-statusbar-tool\Unity3d-player-healthbar-tool
   m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 7}
-    m_SelectedIDs: b4270000
-    m_LastClickedID: 10164
+    m_SelectedIDs: 88270000
+    m_LastClickedID: 10120
     m_ExpandedIDs: 0000000084270000a02700000a280000162800002628000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -436,18 +436,18 @@ MonoBehaviour:
     m_ExpandedInstanceIDs: c6230000b628000068290000c62f00001a2900002634000000000000802d0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: Testerr
-      m_OriginalName: Testerr
+      m_Name: 
+      m_OriginalName: 
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 13656
+      m_UserData: 0
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 0
+      m_OriginalEventType: 11
       m_IsRenamingFilename: 1
       m_ClientGUIView: {fileID: 11}
     m_CreateAssetUtility:
@@ -570,9 +570,9 @@ MonoBehaviour:
   m_isRotationLocked: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 542.96735, y: 396.2381, z: -0.9593688}
+    m_Target: {x: 794.04895, y: 243.40874, z: -1.8824394}
     speed: 2
-    m_Value: {x: 542.96735, y: 396.2381, z: -0.9593688}
+    m_Value: {x: 794.04895, y: 243.40874, z: -1.8824394}
   m_RenderMode: 0
   m_ValidateTrueMetals: 0
   m_SceneViewState:
@@ -600,9 +600,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 574.0032
+    m_Target: 664.2806
     speed: 2
-    m_Value: 574.0032
+    m_Value: 664.2806
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -643,9 +643,9 @@ MonoBehaviour:
   m_PersistentViewDataDictionary: {fileID: 0}
   m_TreeViewState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: cc280000
-    m_LastClickedID: 10444
-    m_ExpandedIDs: 98fbffff000000007428000080280000a4280000
+    m_SelectedIDs: 
+    m_LastClickedID: 0
+    m_ExpandedIDs: 98fbffff0000000080280000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 

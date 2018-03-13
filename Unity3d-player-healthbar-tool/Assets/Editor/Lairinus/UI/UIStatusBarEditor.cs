@@ -28,6 +28,9 @@ public class UIStatusBarEditor : Editor
                 ShowSimpleFillUI();
                 break;
         }
+        EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
+        GUILayout.Space(_util.sectionSpace);
+        ShowTextSettings();
     }
 
     private Image.OriginHorizontal _horizontalOriginValue = new Image.OriginHorizontal();
@@ -51,12 +54,6 @@ public class UIStatusBarEditor : Editor
         GUILayout.BeginHorizontal();
         GUILayout.Space(_util.propertySpace);
         _object.valueText = (Text)EditorGUILayout.ObjectField("Value Text", _object.valueText, typeof(Text), true);
-        GUILayout.EndHorizontal();
-
-        // Append Text
-        GUILayout.BeginHorizontal();
-        GUILayout.Space(_util.propertySpace);
-        _object.separationText = EditorGUILayout.TextField("Appended Text", _object.separationText);
         GUILayout.EndHorizontal();
 
         // Spacer
@@ -93,6 +90,12 @@ public class UIStatusBarEditor : Editor
             GUILayout.BeginHorizontal();
             GUILayout.Space(_util.propertySpace);
             _object.valueLingeringImage = (Image)EditorGUILayout.ObjectField(_util.lingeringValueImage, _object.valueLingeringImage, typeof(Image), true);
+            GUILayout.EndHorizontal();
+
+            // Lingering Value Speed
+            GUILayout.BeginHorizontal();
+            GUILayout.Space(_util.propertySpace);
+            _object.lingeringValueSpeed = EditorGUILayout.Slider(_util.lingeringValueSpeed, _object.lingeringValueSpeed, 0, 1);
             GUILayout.EndHorizontal();
         }
     }
@@ -151,6 +154,39 @@ public class UIStatusBarEditor : Editor
         GUILayout.EndHorizontal();
     }
 
+    private void ShowTextSettings()
+    {
+        EditorGUILayout.LabelField("Text Settings", EditorStyles.boldLabel);
+
+        // Status Text Display Type
+        GUILayout.BeginHorizontal();
+        GUILayout.Space(_util.propertySpace);
+        _object.statusTextDisplayType = (UIStatusBar.TextDisplayType)EditorGUILayout.EnumPopup(_util.statusTextDisplayType, _object.statusTextDisplayType);
+        GUILayout.EndHorizontal();
+
+        // Append Text
+        if (_object.statusTextDisplayType == UIStatusBar.TextDisplayType.CurrentValueOfMax || _object.statusTextDisplayType == UIStatusBar.TextDisplayType.Quantity || _object.statusTextDisplayType == UIStatusBar.TextDisplayType.CurrentValuePercentage)
+        {
+            GUILayout.BeginHorizontal();
+            GUILayout.Space(_util.propertySpace);
+            switch (_object.statusTextDisplayType)
+            {
+                case UIStatusBar.TextDisplayType.CurrentValueOfMax:
+                    _object.separationText = EditorGUILayout.TextField("Middle Text", _object.separationText);
+                    break;
+
+                case UIStatusBar.TextDisplayType.CurrentValuePercentage:
+                    _object.separationText = EditorGUILayout.TextField("Percentage Text", _object.separationText);
+                    break;
+
+                case UIStatusBar.TextDisplayType.Quantity:
+                    _object.separationText = EditorGUILayout.TextField("Quantity text", _object.separationText);
+                    break;
+            }
+            GUILayout.EndHorizontal();
+        }
+    }
+
     private UIStatusBar _object = null;
     private GUIUtility _util = new GUIUtility();
 
@@ -207,5 +243,11 @@ public class UIStatusBarEditor : Editor
 
         private GUIContent _showLingeringValue = new GUIContent("Show Lingering Value", "If shown, you will need to attach a Lingering Value Image to this component. The Lingering Value Image acts as an after-image after a radical change in the Status Bar's value.");
         public GUIContent showLingeringValue { get { return _showLingeringValue; } }
+
+        private GUIContent _statusTextDisplayType = new GUIContent("Text Display Type", "Uses the provided \"Value Text\" to display a specific type of Text. Some of the Text Display Types use the \"Appended Text\" value somewhere in the string");
+        public GUIContent statusTextDisplayType { get { return _statusTextDisplayType; } }
+
+        private GUIContent _lingeringValueSpeed = new GUIContent("Lingering Value Speed", "This determines how slowly the Lingering Value depletes after a radical shift in values. Anything less than 1 is slower than normal speed.");
+        public GUIContent lingeringValueSpeed { get { return _lingeringValueSpeed; } }
     }
 }
