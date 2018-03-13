@@ -115,8 +115,8 @@ namespace Lairinus.UI.Status
                 return;
 
             int currentRoughIndex = Mathf.CeilToInt(separateSprites.Count * currentPercentage);
-            if (currentRoughIndex == 0)
-                currentRoughIndex++;
+            if (currentRoughIndex <= 0)
+                currentRoughIndex = 1;
 
             Sprite desiredSprite = separateSprites[currentRoughIndex - 1];
             if (desiredSprite == null)

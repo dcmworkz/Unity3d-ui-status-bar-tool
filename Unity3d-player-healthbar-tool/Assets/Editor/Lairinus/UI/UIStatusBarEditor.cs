@@ -87,6 +87,7 @@ public class UIStatusBarEditor : Editor
         // Lingering Value Image
         if (_object.showLingeringValue)
         {
+            // Lingering Value Image
             GUILayout.BeginHorizontal();
             GUILayout.Space(_util.propertySpace);
             _object.valueLingeringImage = (Image)EditorGUILayout.ObjectField(_util.lingeringValueImage, _object.valueLingeringImage, typeof(Image), true);
