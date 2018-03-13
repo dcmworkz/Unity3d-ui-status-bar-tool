@@ -140,12 +140,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5e53a925b17bfc479a4f6ab7a4a5a72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  separateSprites: []
   _currentValueImage: {fileID: 924424023}
   _enableDebugging: 1
   _fillOrigin: 0
   _lingeringValueImage: {fileID: 0}
-  _quantityIcon: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  _separateSprites: []
+  _quantityIcon: {fileID: 21300000, guid: e31264aba86dfc04f81ef45924fa5fc3, type: 3}
   _separationText: x
   _showLastingValue: 0
   _simpleFill_FillMethod: 0
@@ -417,12 +417,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5e53a925b17bfc479a4f6ab7a4a5a72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentValueImage: {fileID: 646309933}
-  _enableDebugging: 1
-  _fillOrigin: 0
-  _lingeringValueImage: {fileID: 0}
-  _quantityIcon: {fileID: 0}
-  _separateSprites:
+  separateSprites:
   - {fileID: 21300000, guid: 35f3e5d99fb1a2c48a4e4f3e57bd4ed9, type: 3}
   - {fileID: 21300000, guid: cbfac9b719cb21a4f973d070a71bf994, type: 3}
   - {fileID: 21300000, guid: 73b7ee5def82b454ab713f1b952f021c, type: 3}
@@ -440,6 +435,11 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 79f61fb5717d0a140808eaa16c1f2c91, type: 3}
   - {fileID: 21300000, guid: 2477d8217f9fa594580a98e14d7a81b0, type: 3}
   - {fileID: 21300000, guid: a947bab8f534e5240bebfb914d827fde, type: 3}
+  _currentValueImage: {fileID: 646309933}
+  _enableDebugging: 1
+  _fillOrigin: 0
+  _lingeringValueImage: {fileID: 646309933}
+  _quantityIcon: {fileID: 0}
   _separationText: x
   _showLastingValue: 0
   _simpleFill_FillMethod: 0
@@ -876,12 +876,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5e53a925b17bfc479a4f6ab7a4a5a72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  separateSprites: []
   _currentValueImage: {fileID: 1642672757}
   _enableDebugging: 1
   _fillOrigin: 0
   _lingeringValueImage: {fileID: 1650827170}
-  _quantityIcon: {fileID: 0}
-  _separateSprites: []
+  _quantityIcon: {fileID: 21300000, guid: 9b0a353a57bfa9946acb265378cc2f5d, type: 3}
   _separationText: x
   _showLastingValue: 1
   _simpleFill_FillMethod: 0

@@ -24,18 +24,19 @@ namespace Lairinus.UI.Status
         }
 
         public bool enableDebugging { get { return _enableDebugging; } set { _enableDebugging = value; } }
-        public int fillOrigin { get; set; }
+        public Image.FillMethod fillMethod { get { return _simpleFill_FillMethod; } set { _simpleFill_FillMethod = value; } }
+        public int fillOrigin { get { return _fillOrigin; } set { _fillOrigin = value; } }
         public float lastingValueUpdateRate { get { return simpleFill_LastingValueUpdateRate; } }
+
+        public List<Sprite> separateSprites = new List<Sprite>();
         public Sprite quantityIcon { get { return _quantityIcon; } set { _quantityIcon = value; } }
-        public List<Sprite> separateSprites { get { return _separateSprites; } }
         public string separationText { get { return _separationText; } set { _separationText = value; } }
-        public bool showLastingValue { get { return _showLastingValue; } set { _showLastingValue = value; } }
-        public Image.FillMethod simpleFill_FillMethod { get { return _simpleFill_FillMethod; } set { _simpleFill_FillMethod = value; } }
+        public bool showLingeringValue { get { return _showLastingValue; } set { _showLastingValue = value; } }
+        public StatusBarType statusBarType { get { return _statusBarType; } set { _statusBarType = value; } }
         public TextDisplayType statusTextDisplayType { get { return _statusTextDisplayType; } }
         public Image valueImage { get { return _currentValueImage; } set { _currentValueImage = value; } }
         public Image valueLingeringImage { get { return _lingeringValueImage; } set { _lingeringValueImage = value; } }
         public Text valueText { get { return _valueText; } set { _valueText = value; } }
-        public StatusBarType statusBarType { get { return _statusBarType; } set { _statusBarType = value; } }
 
         public void UpdateStatusBar(float currentValue, float maxValue)
         {
@@ -76,7 +77,6 @@ namespace Lairinus.UI.Status
         private float _lastLingeringPercentage = 0;
         [SerializeField] private Image _lingeringValueImage = null;
         [SerializeField] private Sprite _quantityIcon = null;
-        [SerializeField] private List<Sprite> _separateSprites = new List<Sprite>();
         [SerializeField] private string _separationText = "x";
         [SerializeField] private bool _showLastingValue = false;
         [SerializeField] private Image.FillMethod _simpleFill_FillMethod = Image.FillMethod.Horizontal;
@@ -110,11 +110,14 @@ namespace Lairinus.UI.Status
 
         private void SeparateSprites_UpdateValue(float currentValue, float maxValue, float currentPercentage)
         {
-            int currentRoughIndex = Mathf.CeilToInt(_separateSprites.Count * currentPercentage);
+            if (separateSprites == null)
+                return;
+
+            int currentRoughIndex = Mathf.CeilToInt(separateSprites.Count * currentPercentage);
             if (currentRoughIndex == 0)
                 currentRoughIndex++;
 
-            Sprite desiredSprite = _separateSprites[currentRoughIndex - 1];
+            Sprite desiredSprite = separateSprites[currentRoughIndex - 1];
             if (desiredSprite == null)
             {
                 if (_enableDebugging)
@@ -150,9 +153,15 @@ namespace Lairinus.UI.Status
                 return;
             }
 
-            _currentValueImage.type = Image.Type.Filled;
-            _currentValueImage.fillMethod = _simpleFill_FillMethod;
-            _currentValueImage.fillOrigin = _fillOrigin;
+            if (_currentValueImage.type != Image.Type.Filled)
+                _currentValueImage.type = Image.Type.Filled;
+
+            if (_currentValueImage.fillMethod != _simpleFill_FillMethod)
+                _currentValueImage.fillMethod = _simpleFill_FillMethod;
+
+            if (_currentValueImage.fillOrigin != _fillOrigin)
+                _currentValueImage.fillOrigin = _fillOrigin;
+
             _currentValueImage.fillAmount = currentPercentage;
         }
 
@@ -171,9 +180,14 @@ namespace Lairinus.UI.Status
                     return;
                 }
 
-                _lingeringValueImage.type = Image.Type.Filled;
-                _lingeringValueImage.fillMethod = _simpleFill_FillMethod;
-                _lingeringValueImage.fillAmount = _lastLingeringPercentage;
+                if (_lingeringValueImage.type != Image.Type.Filled)
+                    _lingeringValueImage.type = Image.Type.Filled;
+
+                if (_lingeringValueImage.fillMethod != _simpleFill_FillMethod)
+                    _lingeringValueImage.fillMethod = _simpleFill_FillMethod;
+
+                if (_lingeringValueImage.fillOrigin != _fillOrigin)
+                    _lingeringValueImage.fillOrigin = _fillOrigin;
 
                 if (currentPercentage > 0)
                 {
@@ -183,6 +197,8 @@ namespace Lairinus.UI.Status
                         _lastLingeringPercentage -= Time.deltaTime - simpleFill_LastingValueUpdateRate;
                 }
                 else _lastLingeringPercentage = 0;
+
+                _lingeringValueImage.fillAmount = _lastLingeringPercentage;
             }
         }
 
