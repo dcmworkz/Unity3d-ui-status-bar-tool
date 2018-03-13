@@ -11,8 +11,9 @@ public class StatusDisplays : MonoBehaviour
     public int maxMana = 1000;
     public int currentMana = 1000;
 
-    [SerializeField] private MainStatusBar _statusBar = null;
-    [SerializeField] private MainStatusBar _quantityStatusBar = null;
+    [SerializeField] private UIStatusBar _statusBar = null;
+    [SerializeField] private UIStatusBar _quantityStatusBar = null;
+    [SerializeField] private UIStatusBar _separateSpriteBar = null;
 
     // Use this for initialization
     private void Start()
@@ -27,6 +28,7 @@ public class StatusDisplays : MonoBehaviour
 
         _statusBar.UpdateStatusBar(currentHealth, maxHealth);
         _quantityStatusBar.UpdateStatusBar(currentHealth, maxHealth);
+        _separateSpriteBar.UpdateStatusBar(currentHealth, maxHealth);
     }
 
     public void OnClick_SetCurrentTo100()

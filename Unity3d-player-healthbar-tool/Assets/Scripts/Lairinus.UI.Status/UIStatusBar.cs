@@ -5,39 +5,37 @@ using UnityEngine.UI;
 
 namespace Lairinus.UI.Status
 {
-    public class MainStatusBar : MonoBehaviour
+    public class UIStatusBar : MonoBehaviour
     {
-        public enum SimpleFillTextStatusDisplayType
+        public enum StatusBarType
+        {
+            SimpleFill,
+            Quantity,
+            SeparateSprites
+        }
+
+        public enum TextDisplayType
         {
             None,
+            Quantity,
             CurrentValue,
             CurrentValuePercentage,
             CurrentValueOfMax,
         }
 
-        public enum StatusBarType
-        {
-            SimpleFill,
-            Quantity
-        }
-
-        public enum QuantityTextStatusDisplayType
-        {
-            Current,
-            CurrentOfMax
-        }
-
         public bool enableDebugging { get { return _enableDebugging; } set { _enableDebugging = value; } }
-        public int simpleFillOrigin { get; set; }
-        public float simpleFill_lastingValueUpdateRate { get { return simpleFill_LastingValueUpdateRate; } }
+        public int fillOrigin { get; set; }
+        public float lastingValueUpdateRate { get { return simpleFill_LastingValueUpdateRate; } }
+        public Sprite quantityIcon { get { return _quantityIcon; } set { _quantityIcon = value; } }
+        public List<Sprite> separateSprites { get { return _separateSprites; } }
+        public string separationText { get { return _separationText; } set { _separationText = value; } }
         public bool showLastingValue { get { return _showLastingValue; } set { _showLastingValue = value; } }
         public Image.FillMethod simpleFill_FillMethod { get { return _simpleFill_FillMethod; } set { _simpleFill_FillMethod = value; } }
-        public SimpleFillTextStatusDisplayType statusTextDisplayType { get { return _statusTextDisplayType; } }
-        public QuantityTextStatusDisplayType quantityTextDisplayType { get { return _quantityTextDisplayType; } }
+        public TextDisplayType statusTextDisplayType { get { return _statusTextDisplayType; } }
         public Image valueImage { get { return _currentValueImage; } set { _currentValueImage = value; } }
         public Image valueLingeringImage { get { return _lingeringValueImage; } set { _lingeringValueImage = value; } }
         public Text valueText { get { return _valueText; } set { _valueText = value; } }
-        public Sprite quantityIcon { get { return _quantityIcon; } set { _quantityIcon = value; } }
+        public StatusBarType statusBarType { get { return _statusBarType; } set { _statusBarType = value; } }
 
         public void UpdateStatusBar(float currentValue, float maxValue)
         {
@@ -48,14 +46,13 @@ namespace Lairinus.UI.Status
              */
 
             float currentPercentage = (currentValue / maxValue);
-
+            UpdateTextValue(currentValue, maxValue, currentPercentage);
             switch (_statusBarType)
             {
                 case StatusBarType.SimpleFill:
                     {
                         SimpleFill_FillStatusBar(currentPercentage);
                         SimpleFill_UpdateLingeringFillValue(currentPercentage);
-                        SimpleFill_UpdateText(currentValue, maxValue, currentPercentage);
                     }
                     break;
 
@@ -64,28 +61,29 @@ namespace Lairinus.UI.Status
                         Quantity_UpdateValue(currentValue, maxValue, currentPercentage);
                     }
                     break;
+
+                case StatusBarType.SeparateSprites:
+                    {
+                        SeparateSprites_UpdateValue(currentValue, maxValue, currentPercentage);
+                    }
+                    break;
             }
         }
 
         [SerializeField] private Image _currentValueImage = null;
         [SerializeField] private bool _enableDebugging = false;
         [SerializeField] private int _fillOrigin = 0;
-        [SerializeField] private float simpleFill_LastingValueUpdateRate = 0;
         private float _lastLingeringPercentage = 0;
         [SerializeField] private Image _lingeringValueImage = null;
+        [SerializeField] private Sprite _quantityIcon = null;
+        [SerializeField] private List<Sprite> _separateSprites = new List<Sprite>();
+        [SerializeField] private string _separationText = "x";
         [SerializeField] private bool _showLastingValue = false;
         [SerializeField] private Image.FillMethod _simpleFill_FillMethod = Image.FillMethod.Horizontal;
         [SerializeField] private StatusBarType _statusBarType = StatusBarType.SimpleFill;
-        [SerializeField] private Sprite _quantityIcon = null;
-        [SerializeField] private SimpleFillTextStatusDisplayType _statusTextDisplayType = SimpleFillTextStatusDisplayType.CurrentValue;
-        [SerializeField] private QuantityTextStatusDisplayType _quantityTextDisplayType = QuantityTextStatusDisplayType.Current;
-        [SerializeField] private string _quantitySeparationText = "x";
-
+        [SerializeField] private TextDisplayType _statusTextDisplayType = TextDisplayType.CurrentValue;
         [SerializeField] private Text _valueText = null;
-
-        private void Awake()
-        {
-        }
+        [SerializeField] private float simpleFill_LastingValueUpdateRate = 0;
 
         private void Quantity_UpdateValue(float currentValue, float maxValue, float currentPercentage)
         {
@@ -108,17 +106,34 @@ namespace Lairinus.UI.Status
             }
 
             _currentValueImage.sprite = _quantityIcon;
+        }
 
-            switch (_quantityTextDisplayType)
+        private void SeparateSprites_UpdateValue(float currentValue, float maxValue, float currentPercentage)
+        {
+            int currentRoughIndex = Mathf.CeilToInt(_separateSprites.Count * currentPercentage);
+            if (currentRoughIndex == 0)
+                currentRoughIndex++;
+
+            Sprite desiredSprite = _separateSprites[currentRoughIndex - 1];
+            if (desiredSprite == null)
             {
-                case QuantityTextStatusDisplayType.Current:
-                    _valueText.text = _quantitySeparationText + " " + currentValue.ToString();
-                    break;
-
-                case QuantityTextStatusDisplayType.CurrentOfMax:
-                    _valueText.text = currentValue.ToString() + " " + _quantitySeparationText + " " + maxValue.ToString();
-                    break;
+                if (_enableDebugging)
+                {
+                    Debug.LogWarning(Debugging.SpriteIsNull.Replace(Debugging.ReplaceString, gameObject.name));
+                    return;
+                }
             }
+
+            if (_currentValueImage == null)
+            {
+                if (_enableDebugging)
+                {
+                    Debug.LogWarning(Debugging.CurrentValueImageIsNull.Replace(Debugging.ReplaceString, gameObject.name));
+                    return;
+                }
+            }
+
+            _currentValueImage.sprite = desiredSprite;
         }
 
         private void SimpleFill_FillStatusBar(float currentPercentage)
@@ -137,6 +152,7 @@ namespace Lairinus.UI.Status
 
             _currentValueImage.type = Image.Type.Filled;
             _currentValueImage.fillMethod = _simpleFill_FillMethod;
+            _currentValueImage.fillOrigin = _fillOrigin;
             _currentValueImage.fillAmount = currentPercentage;
         }
 
@@ -170,7 +186,7 @@ namespace Lairinus.UI.Status
             }
         }
 
-        private void SimpleFill_UpdateText(float currentValue, float maxValue, float currentPercentage)
+        private void UpdateTextValue(float currentValue, float maxValue, float currentPercentage)
         {
             /*
              * Internal use
@@ -180,7 +196,7 @@ namespace Lairinus.UI.Status
 
             if (_valueText == null)
             {
-                if (_statusTextDisplayType != SimpleFillTextStatusDisplayType.None && _enableDebugging)
+                if (_statusTextDisplayType != TextDisplayType.None && _enableDebugging)
                     Debug.LogWarning(Debugging.TextValueIsNull.Replace(Debugging.ReplaceString, gameObject.name));
 
                 return;
@@ -188,24 +204,30 @@ namespace Lairinus.UI.Status
 
             switch (_statusTextDisplayType)
             {
-                case SimpleFillTextStatusDisplayType.None:
+                case TextDisplayType.None:
                     _valueText.text = "";
                     break;
 
-                case SimpleFillTextStatusDisplayType.CurrentValue:
+                case TextDisplayType.CurrentValue:
                     _valueText.text = ((int)currentValue).ToString();
                     break;
 
-                case SimpleFillTextStatusDisplayType.CurrentValueOfMax:
-                    _valueText.text = ((int)currentValue).ToString() + " / " + ((int)maxValue).ToString();
+                case TextDisplayType.CurrentValueOfMax:
+                    _valueText.text = ((int)currentValue).ToString() + _separationText + ((int)maxValue).ToString();
                     break;
 
-                case SimpleFillTextStatusDisplayType.CurrentValuePercentage:
+                case TextDisplayType.CurrentValuePercentage:
                     {
                         currentPercentage *= 100;
-                        _valueText.text = ((int)currentPercentage).ToString() + "%";
+                        _valueText.text = ((int)currentPercentage).ToString() + _separationText;
                         break;
                     }
+
+                case TextDisplayType.Quantity:
+                    {
+                        _valueText.text = _separationText + ((int)currentValue).ToString();
+                    }
+                    break;
             }
         }
 
@@ -214,6 +236,7 @@ namespace Lairinus.UI.Status
             public const string CurrentValueImageIsNull = "Lairinus.UI.Status.MainStatusBar on GameObject \"" + ReplaceString + "\"- Current Value Image is NULL!\n The Current Value Image is null, but you are using the \"Simple Fill\" Status Bar Type.";
             public const string LingeringValueImageIsNull = "Lairinus.UI.Status.MainStatusBar on GameObject \"" + ReplaceString + "\"- Lingering Value Image is NULL\n The Lingering Value Image is null, but the MainStatusBar is set to display a lingering value. Either assign an Image object or do not flag this to show a lingering value!";
             public const string ReplaceString = "%%custom%%";
+            public const string SpriteIsNull = "Lairinus.UI.Status.MainStatusBar on GameObject \"" + ReplaceString + "\"- Sprite is NULL!\n inside of the \"separateSprites\" list. Assign a Sprite Object to show a sprite for this percentage!";
             public const string TextValueIsNull = "Lairinus.UI.Status.MainStatusBar on GameObject \"" + ReplaceString + "\"- Value Text is NULL!\n The \"Value Text\" Object is NULL. Assign a Text object, or set the \"Status Text Display Type\" to \"None\"";
         }
     }

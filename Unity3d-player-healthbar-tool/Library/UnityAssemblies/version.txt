@@ -1,5 +1,5 @@
 2017.3.1f1:3.1.0.0
-StandaloneWindows64
+WebGL
 D:/UnityEditor/Editor/Data/Managed/UnityEditor.dll
 D:/UnityEditor/Editor/Data/Managed/UnityEngine/UnityEngine.dll
 D:/UnityEditor/Editor/Data/Managed/UnityEngine/UnityEngine.CoreModule.dll
