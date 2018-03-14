@@ -23,21 +23,23 @@ namespace Lairinus.UI.Status
             CurrentValueOfMax,
         }
 
+        public List<Sprite> separateSprites = new List<Sprite>();
         public bool enableDebugging { get { return _enableDebugging; } set { _enableDebugging = value; } }
         public Image.FillMethod fillMethod { get { return _simpleFill_FillMethod; } set { _simpleFill_FillMethod = value; } }
         public int fillOrigin { get { return _fillOrigin; } set { _fillOrigin = value; } }
         public float lastingValueUpdateRate { get { return _lingeringValueSpeed; } }
-
-        public List<Sprite> separateSprites = new List<Sprite>();
+        public float lingeringValueSpeed { get { return _lingeringValueSpeed; } set { _lingeringValueSpeed = value; } }
+        public string postfixText { get { return _postfixText; } set { _postfixText = value; } }
+        public string prefixText { get { return _prefixText; } set { _prefixText = value; } }
         public Sprite quantityIcon { get { return _quantityIcon; } set { _quantityIcon = value; } }
-        public string separationText { get { return _separationText; } set { _separationText = value; } }
         public bool showLingeringValue { get { return _showLingeringValue; } set { _showLingeringValue = value; } }
         public StatusBarType statusBarType { get { return _statusBarType; } set { _statusBarType = value; } }
         public TextDisplayType statusTextDisplayType { get { return _statusTextDisplayType; } set { _statusTextDisplayType = value; } }
+        public bool usePostfixText { get { return _usePostfixText; } set { _usePostfixText = value; } }
+        public bool usePrefixText { get { return _usePrefixText; } set { _usePrefixText = value; } }
         public Image valueImage { get { return _currentValueImage; } set { _currentValueImage = value; } }
         public Image valueLingeringImage { get { return _lingeringValueImage; } set { _lingeringValueImage = value; } }
         public Text valueText { get { return _valueText; } set { _valueText = value; } }
-        public float lingeringValueSpeed { get { return _lingeringValueSpeed; } set { _lingeringValueSpeed = value; } }
 
         public void UpdateStatusBar(float currentValue, float maxValue)
         {
@@ -77,14 +79,17 @@ namespace Lairinus.UI.Status
         [SerializeField] private int _fillOrigin = 0;
         private float _lastLingeringPercentage = 0;
         [SerializeField] private Image _lingeringValueImage = null;
+        [SerializeField] private float _lingeringValueSpeed = 0;
+        [SerializeField] private string _postfixText = "";
+        [SerializeField] private string _prefixText = "";
         [SerializeField] private Sprite _quantityIcon = null;
-        [SerializeField] private string _separationText = "x";
         [SerializeField] private bool _showLingeringValue = false;
         [SerializeField] private Image.FillMethod _simpleFill_FillMethod = Image.FillMethod.Horizontal;
         [SerializeField] private StatusBarType _statusBarType = StatusBarType.SimpleFill;
         [SerializeField] private TextDisplayType _statusTextDisplayType = TextDisplayType.CurrentValue;
+        [SerializeField] private bool _usePostfixText = false;
+        [SerializeField] private bool _usePrefixText = false;
         [SerializeField] private Text _valueText = null;
-        [SerializeField] private float _lingeringValueSpeed = 0;
 
         private void Quantity_UpdateValue(float currentValue, float maxValue, float currentPercentage)
         {
@@ -111,14 +116,16 @@ namespace Lairinus.UI.Status
 
         private void SeparateSprites_UpdateValue(float currentValue, float maxValue, float currentPercentage)
         {
-            if (separateSprites == null)
+            if (separateSprites == null || separateSprites.Count == 0)
                 return;
 
-            int currentRoughIndex = Mathf.CeilToInt(separateSprites.Count * currentPercentage);
-            if (currentRoughIndex <= 0)
-                currentRoughIndex = 1;
+            int currentRoughIndex = Mathf.CeilToInt((separateSprites.Count - 1) * currentPercentage);
+            if (currentRoughIndex >= separateSprites.Count)
+                currentRoughIndex = separateSprites.Count - 1;
+            else if (currentRoughIndex <= 0)
+                currentRoughIndex = 0;
 
-            Sprite desiredSprite = separateSprites[currentRoughIndex - 1];
+            Sprite desiredSprite = separateSprites[currentRoughIndex];
             if (desiredSprite == null)
             {
                 if (_enableDebugging)
@@ -227,33 +234,42 @@ namespace Lairinus.UI.Status
                 return;
             }
 
+            string finalText = "";
+            if (usePrefixText)
+                finalText += _prefixText;
+
             switch (_statusTextDisplayType)
             {
                 case TextDisplayType.None:
-                    _valueText.text = "";
+                    finalText += "";
                     break;
 
                 case TextDisplayType.CurrentValue:
-                    _valueText.text = ((int)currentValue).ToString();
+                    finalText += ((int)currentValue).ToString();
                     break;
 
                 case TextDisplayType.CurrentValueOfMax:
-                    _valueText.text = ((int)currentValue).ToString() + _separationText + ((int)maxValue).ToString();
+                    finalText += ((int)currentValue).ToString() + "of" + ((int)maxValue).ToString();
                     break;
 
                 case TextDisplayType.CurrentValuePercentage:
                     {
                         currentPercentage *= 100;
-                        _valueText.text = ((int)currentPercentage).ToString() + _separationText;
+                        finalText += ((int)currentPercentage).ToString();
                         break;
                     }
 
                 case TextDisplayType.Quantity:
                     {
-                        _valueText.text = _separationText + ((int)currentValue).ToString();
+                        finalText += ((int)currentValue).ToString();
                     }
                     break;
             }
+
+            if (usePostfixText)
+                finalText += _postfixText;
+
+            _valueText.text = finalText;
         }
 
         private class Debugging

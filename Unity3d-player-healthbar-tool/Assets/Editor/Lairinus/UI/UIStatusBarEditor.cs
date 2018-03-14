@@ -165,25 +165,33 @@ public class UIStatusBarEditor : Editor
         _object.statusTextDisplayType = (UIStatusBar.TextDisplayType)EditorGUILayout.EnumPopup(_util.statusTextDisplayType, _object.statusTextDisplayType);
         GUILayout.EndHorizontal();
 
-        // Append Text
-        if (_object.statusTextDisplayType == UIStatusBar.TextDisplayType.CurrentValueOfMax || _object.statusTextDisplayType == UIStatusBar.TextDisplayType.Quantity || _object.statusTextDisplayType == UIStatusBar.TextDisplayType.CurrentValuePercentage)
+        // Use Prefix Text
+        GUILayout.BeginHorizontal();
+        GUILayout.Space(_util.propertySpace);
+        _object.usePrefixText = EditorGUILayout.Toggle("Use Prefix Text", _object.usePrefixText);
+        GUILayout.EndHorizontal();
+
+        // Use Postfix Text
+        GUILayout.BeginHorizontal();
+        GUILayout.Space(_util.propertySpace);
+        _object.usePostfixText = EditorGUILayout.Toggle("Use Postfix Text", _object.usePostfixText);
+        GUILayout.EndHorizontal();
+
+        // Prefix Text
+        if (_object.usePrefixText)
         {
             GUILayout.BeginHorizontal();
             GUILayout.Space(_util.propertySpace);
-            switch (_object.statusTextDisplayType)
-            {
-                case UIStatusBar.TextDisplayType.CurrentValueOfMax:
-                    _object.separationText = EditorGUILayout.TextField("Middle Text", _object.separationText);
-                    break;
+            _object.prefixText = EditorGUILayout.TextField("Prefix Text", _object.prefixText);
+            GUILayout.EndHorizontal();
+        }
 
-                case UIStatusBar.TextDisplayType.CurrentValuePercentage:
-                    _object.separationText = EditorGUILayout.TextField("Percentage Text", _object.separationText);
-                    break;
-
-                case UIStatusBar.TextDisplayType.Quantity:
-                    _object.separationText = EditorGUILayout.TextField("Quantity text", _object.separationText);
-                    break;
-            }
+        // Postfix Text
+        if (_object.usePostfixText)
+        {
+            GUILayout.BeginHorizontal();
+            GUILayout.Space(_util.propertySpace);
+            _object.postfixText = EditorGUILayout.TextField("Postfix Text", _object.postfixText);
             GUILayout.EndHorizontal();
         }
     }
