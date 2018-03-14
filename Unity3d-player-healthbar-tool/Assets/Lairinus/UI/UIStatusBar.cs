@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Lairinus.UI.Status
+namespace Lairinus.UI
 {
     public class UIStatusBar : MonoBehaviour
     {
@@ -24,23 +24,23 @@ namespace Lairinus.UI.Status
         }
 
         public List<Sprite> separateSprites = new List<Sprite>();
-        public bool enableDebugging { get { return _enableDebugging; } set { _enableDebugging = value; } }
-        public Image.FillMethod fillMethod { get { return _simpleFill_FillMethod; } set { _simpleFill_FillMethod = value; } }
-        public int fillOrigin { get { return _fillOrigin; } set { _fillOrigin = value; } }
-        public float lastingValueUpdateRate { get { return _lingeringValueSpeed; } }
-        public float lingeringValueSpeed { get { return _lingeringValueSpeed; } set { _lingeringValueSpeed = value; } }
-        public string postfixText { get { return _postfixText; } set { _postfixText = value; } }
-        public string prefixText { get { return _prefixText; } set { _prefixText = value; } }
-        public Sprite quantityIcon { get { return _quantityIcon; } set { _quantityIcon = value; } }
-        public bool showLingeringValue { get { return _showLingeringValue; } set { _showLingeringValue = value; } }
-        public StatusBarType statusBarType { get { return _statusBarType; } set { _statusBarType = value; } }
-        public TextDisplayType statusTextDisplayType { get { return _statusTextDisplayType; } set { _statusTextDisplayType = value; } }
-        public bool usePostfixText { get { return _usePostfixText; } set { _usePostfixText = value; } }
-        public bool usePrefixText { get { return _usePrefixText; } set { _usePrefixText = value; } }
-        public Image valueImage { get { return _currentValueImage; } set { _currentValueImage = value; } }
-        public Image valueLingeringImage { get { return _lingeringValueImage; } set { _lingeringValueImage = value; } }
-        public Text valueText { get { return _valueText; } set { _valueText = value; } }
-
+        [SerializeField] private Image _currentValueImage = null;
+        [SerializeField] private bool _enableDebugging = false;
+        [SerializeField] private int _fillOrigin = 0;
+        private float _lastLingeringPercentage = 0;
+        [SerializeField] private Image _lingeringValueImage = null;
+        [SerializeField] private float _lingeringValueSpeed = 0;
+        [SerializeField] private string _middleText = "";
+        [SerializeField] private string _postfixText = "";
+        [SerializeField] private string _prefixText = "";
+        [SerializeField] private Sprite _quantityIcon = null;
+        [SerializeField] private bool _showLingeringValue = false;
+        [SerializeField] private Image.FillMethod _simpleFill_FillMethod = Image.FillMethod.Horizontal;
+        [SerializeField] private StatusBarType _statusBarType = StatusBarType.SimpleFill;
+        [SerializeField] private TextDisplayType _statusTextDisplayType = TextDisplayType.CurrentValue;
+        [SerializeField] private bool _usePostfixText = false;
+        [SerializeField] private bool _usePrefixText = false;
+        [SerializeField] private Text _valueText = null;
         public void UpdateStatusBar(float currentValue, float maxValue)
         {
             /*
@@ -73,23 +73,6 @@ namespace Lairinus.UI.Status
                     break;
             }
         }
-
-        [SerializeField] private Image _currentValueImage = null;
-        [SerializeField] private bool _enableDebugging = false;
-        [SerializeField] private int _fillOrigin = 0;
-        private float _lastLingeringPercentage = 0;
-        [SerializeField] private Image _lingeringValueImage = null;
-        [SerializeField] private float _lingeringValueSpeed = 0;
-        [SerializeField] private string _postfixText = "";
-        [SerializeField] private string _prefixText = "";
-        [SerializeField] private Sprite _quantityIcon = null;
-        [SerializeField] private bool _showLingeringValue = false;
-        [SerializeField] private Image.FillMethod _simpleFill_FillMethod = Image.FillMethod.Horizontal;
-        [SerializeField] private StatusBarType _statusBarType = StatusBarType.SimpleFill;
-        [SerializeField] private TextDisplayType _statusTextDisplayType = TextDisplayType.CurrentValue;
-        [SerializeField] private bool _usePostfixText = false;
-        [SerializeField] private bool _usePrefixText = false;
-        [SerializeField] private Text _valueText = null;
 
         private void Quantity_UpdateValue(float currentValue, float maxValue, float currentPercentage)
         {
@@ -249,7 +232,7 @@ namespace Lairinus.UI.Status
                     break;
 
                 case TextDisplayType.CurrentValueOfMax:
-                    finalText += ((int)currentValue).ToString() + " of " + ((int)maxValue).ToString();
+                    finalText += ((int)currentValue).ToString() + _middleText + ((int)maxValue).ToString();
                     break;
 
                 case TextDisplayType.CurrentValuePercentage:
@@ -272,6 +255,23 @@ namespace Lairinus.UI.Status
             _valueText.text = finalText;
         }
 
+        public bool enableDebugging { get { return _enableDebugging; } set { _enableDebugging = value; } }
+        public Image.FillMethod fillMethod { get { return _simpleFill_FillMethod; } set { _simpleFill_FillMethod = value; } }
+        public int fillOrigin { get { return _fillOrigin; } set { _fillOrigin = value; } }
+        public float lastingValueUpdateRate { get { return _lingeringValueSpeed; } }
+        public float lingeringValueSpeed { get { return _lingeringValueSpeed; } set { _lingeringValueSpeed = value; } }
+        public string middleText { get { return _middleText; } set { _middleText = value; } }
+        public string postfixText { get { return _postfixText; } set { _postfixText = value; } }
+        public string prefixText { get { return _prefixText; } set { _prefixText = value; } }
+        public Sprite quantityIcon { get { return _quantityIcon; } set { _quantityIcon = value; } }
+        public bool showLingeringValue { get { return _showLingeringValue; } set { _showLingeringValue = value; } }
+        public StatusBarType statusBarType { get { return _statusBarType; } set { _statusBarType = value; } }
+        public TextDisplayType statusTextDisplayType { get { return _statusTextDisplayType; } set { _statusTextDisplayType = value; } }
+        public bool usePostfixText { get { return _usePostfixText; } set { _usePostfixText = value; } }
+        public bool usePrefixText { get { return _usePrefixText; } set { _usePrefixText = value; } }
+        public Image valueImage { get { return _currentValueImage; } set { _currentValueImage = value; } }
+        public Image valueLingeringImage { get { return _lingeringValueImage; } set { _lingeringValueImage = value; } }
+        public Text valueText { get { return _valueText; } set { _valueText = value; } }
         private class Debugging
         {
             public const string CurrentValueImageIsNull = "Lairinus.UI.Status.MainStatusBar on GameObject \"" + ReplaceString + "\"- Current Value Image is NULL!\n The Current Value Image is null, but you are using the \"Simple Fill\" Status Bar Type.";

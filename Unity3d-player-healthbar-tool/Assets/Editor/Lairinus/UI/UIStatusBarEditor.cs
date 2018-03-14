@@ -3,17 +3,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using Lairinus.UI.Status;
+using Lairinus.UI;
 using UnityEngine.UI;
 
 [CustomEditor(typeof(UIStatusBar))]
 public class UIStatusBarEditor : Editor
 {
+    private Image.OriginHorizontal _horizontalOriginValue = new Image.OriginHorizontal();
+
+    private UIStatusBar _object = null;
+
+    private Image.Origin180 _origin180Value = new Image.Origin180();
+
+    private Image.Origin360 _origin360Value = new Image.Origin360();
+
+    private Image.Origin90 _origin90Value = new Image.Origin90();
+
+    private Image.OriginVertical _originVerticalValue = new Image.OriginVertical();
+
+    private GUIUtility _util = new GUIUtility();
+
     public override void OnInspectorGUI()
     {
         _util = new GUIUtility();
         ShowSharedConfiguration();
 
+        _object.enableDebugging = EditorGUILayout.Toggle("Enable Debugging", _object.enableDebugging);
         switch (_object.statusBarType)
         {
             case UIStatusBar.StatusBarType.Quantity:
@@ -31,13 +46,65 @@ public class UIStatusBarEditor : Editor
         EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
         GUILayout.Space(_util.sectionSpace);
         ShowTextSettings();
+        serializedObject.Update();
+        serializedObject.ApplyModifiedProperties();
+    }
+    private void OnEnable()
+    {
+        _object = (UIStatusBar)target;
     }
 
-    private Image.OriginHorizontal _horizontalOriginValue = new Image.OriginHorizontal();
-    private Image.Origin180 _origin180Value = new Image.Origin180();
-    private Image.OriginVertical _originVerticalValue = new Image.OriginVertical();
-    private Image.Origin90 _origin90Value = new Image.Origin90();
-    private Image.Origin360 _origin360Value = new Image.Origin360();
+    private void ShowFillOrigins()
+    {
+        GUILayout.BeginHorizontal();
+        GUILayout.Space(_util.propertySpace);
+        switch (_object.fillMethod)
+        {
+            case Image.FillMethod.Horizontal:
+                _horizontalOriginValue = (Image.OriginHorizontal)EditorGUILayout.EnumPopup(_util.fillOrigin, _horizontalOriginValue);
+                _object.fillOrigin = (int)_horizontalOriginValue;
+                break;
+
+            case Image.FillMethod.Radial180:
+                _origin180Value = (Image.Origin180)EditorGUILayout.EnumPopup(_util.fillOrigin, _origin180Value);
+                _object.fillOrigin = (int)_origin180Value;
+                break;
+
+            case Image.FillMethod.Radial360:
+                _origin360Value = (Image.Origin360)EditorGUILayout.EnumPopup(_util.fillOrigin, _origin360Value);
+                _object.fillOrigin = (int)_origin360Value;
+                break;
+
+            case Image.FillMethod.Radial90:
+                _origin90Value = (Image.Origin90)EditorGUILayout.EnumPopup(_util.fillOrigin, _origin90Value);
+                _object.fillOrigin = (int)_origin90Value;
+                break;
+
+            case Image.FillMethod.Vertical:
+                _originVerticalValue = (Image.OriginVertical)EditorGUILayout.EnumPopup(_util.fillOrigin, _originVerticalValue);
+                _object.fillOrigin = (int)_originVerticalValue;
+                break;
+        }
+        GUILayout.EndHorizontal();
+    }
+
+    private void ShowQuantityUI()
+    {
+        GUILayout.BeginHorizontal();
+        GUILayout.Space(_util.propertySpace);
+        _object.quantityIcon = (Sprite)EditorGUILayout.ObjectField("Display Icon", _object.quantityIcon, typeof(Sprite), true);
+        GUILayout.EndHorizontal();
+    }
+
+    private void ShowSeparateSpriteUI()
+    {
+        // Separate Sprite
+        GUILayout.BeginHorizontal();
+        GUILayout.Space(_util.propertySpace);
+        SerializedProperty prop = serializedObject.FindProperty("separateSprites");
+        EditorGUILayout.PropertyField(prop, true);
+        GUILayout.EndHorizontal();
+    }
 
     private void ShowSharedConfiguration()
     {
@@ -100,61 +167,6 @@ public class UIStatusBarEditor : Editor
             GUILayout.EndHorizontal();
         }
     }
-
-    private void ShowFillOrigins()
-    {
-        GUILayout.BeginHorizontal();
-        GUILayout.Space(_util.propertySpace);
-        switch (_object.fillMethod)
-        {
-            case Image.FillMethod.Horizontal:
-                _horizontalOriginValue = (Image.OriginHorizontal)EditorGUILayout.EnumPopup(_util.fillOrigin, _horizontalOriginValue);
-                _object.fillOrigin = (int)_horizontalOriginValue;
-                break;
-
-            case Image.FillMethod.Radial180:
-                _origin180Value = (Image.Origin180)EditorGUILayout.EnumPopup(_util.fillOrigin, _origin180Value);
-                _object.fillOrigin = (int)_origin180Value;
-                break;
-
-            case Image.FillMethod.Radial360:
-                _origin360Value = (Image.Origin360)EditorGUILayout.EnumPopup(_util.fillOrigin, _origin360Value);
-                _object.fillOrigin = (int)_origin360Value;
-                break;
-
-            case Image.FillMethod.Radial90:
-                _origin90Value = (Image.Origin90)EditorGUILayout.EnumPopup(_util.fillOrigin, _origin90Value);
-                _object.fillOrigin = (int)_origin90Value;
-                break;
-
-            case Image.FillMethod.Vertical:
-                _originVerticalValue = (Image.OriginVertical)EditorGUILayout.EnumPopup(_util.fillOrigin, _originVerticalValue);
-                _object.fillOrigin = (int)_originVerticalValue;
-                break;
-        }
-        GUILayout.EndHorizontal();
-    }
-
-    private void ShowQuantityUI()
-    {
-        GUILayout.BeginHorizontal();
-        GUILayout.Space(_util.propertySpace);
-        _object.quantityIcon = (Sprite)EditorGUILayout.ObjectField("Display Icon", _object.quantityIcon, typeof(Sprite), true);
-        GUILayout.EndHorizontal();
-    }
-
-    private void ShowSeparateSpriteUI()
-    {
-        // Separate Sprite
-        GUILayout.BeginHorizontal();
-        GUILayout.Space(_util.propertySpace);
-        SerializedProperty prop = serializedObject.FindProperty("separateSprites");
-        EditorGUILayout.PropertyField(prop, true);
-        serializedObject.ApplyModifiedProperties();
-        serializedObject.Update();
-        GUILayout.EndHorizontal();
-    }
-
     private void ShowTextSettings()
     {
         EditorGUILayout.LabelField("Text Settings", EditorStyles.boldLabel);
@@ -194,21 +206,24 @@ public class UIStatusBarEditor : Editor
             _object.postfixText = EditorGUILayout.TextField("Postfix Text", _object.postfixText);
             GUILayout.EndHorizontal();
         }
+
+        // Middle Text
+        if (_object.statusTextDisplayType == UIStatusBar.TextDisplayType.CurrentValueOfMax)
+        {
+            GUILayout.BeginHorizontal();
+            GUILayout.Space(_util.propertySpace);
+            _object.middleText = EditorGUILayout.TextField("Middle Text", _object.middleText);
+            GUILayout.EndHorizontal();
+        }
     }
-
-    private UIStatusBar _object = null;
-    private GUIUtility _util = new GUIUtility();
-
-    private void OnEnable()
-    {
-        _object = (UIStatusBar)target;
-    }
-
     private class GUIUtility
     {
-        public int sectionSpace { get { return 20; } }
-        public int propertySpace { get { return 30; } }
-
+        private GUIContent _fillMethod = new GUIContent("Fill Method", "Every image that is being used with the Fill type will have its' type set to fill. This field determines how it will be filled, and will overwrite the Image's value");
+        private GUIContent _fillOrigin = new GUIContent("Fill Origin", "Overwrites the Fill Origin value for the Value and Lingering Value Image Objects");
+        private GUIContent _lingeringValueImage = new GUIContent("Lingering Value Image", "The Lingering Value Image is the bar that sits directly underneath the Status Bar. When the Status Bar's value is set drastically different, you will see the Lingering Value Image as an after-image for a couple of seconds");
+        private GUIContent _lingeringValueSpeed = new GUIContent("Lingering Value Speed", "This determines how slowly the Lingering Value depletes after a radical shift in values. Anything less than 1 is slower than normal speed.");
+        private GUIContent _showLingeringValue = new GUIContent("Show Lingering Value", "If shown, you will need to attach a Lingering Value Image to this component. The Lingering Value Image acts as an after-image after a radical change in the Status Bar's value.");
+        private GUIContent _statusTextDisplayType = new GUIContent("Text Display Type", "Uses the provided \"Value Text\" to display a specific type of Text. Some of the Text Display Types use the \"Appended Text\" value somewhere in the string");
         public GUIContent[] GetStatusBarTypeContent()
         {
             List<GUIContent> final = new List<GUIContent>();
@@ -241,22 +256,13 @@ public class UIStatusBarEditor : Editor
             }
         }
 
-        private GUIContent _fillOrigin = new GUIContent("Fill Origin", "Overwrites the Fill Origin value for the Value and Lingering Value Image Objects");
-        public GUIContent fillOrigin { get { return _fillOrigin; } }
-
-        private GUIContent _fillMethod = new GUIContent("Fill Method", "Every image that is being used with the Fill type will have its' type set to fill. This field determines how it will be filled, and will overwrite the Image's value");
         public GUIContent fillMethod { get { return _fillMethod; } }
-
-        private GUIContent _lingeringValueImage = new GUIContent("Lingering Value Image", "The Lingering Value Image is the bar that sits directly underneath the Status Bar. When the Status Bar's value is set drastically different, you will see the Lingering Value Image as an after-image for a couple of seconds");
+        public GUIContent fillOrigin { get { return _fillOrigin; } }
         public GUIContent lingeringValueImage { get { return _lingeringValueImage; } }
-
-        private GUIContent _showLingeringValue = new GUIContent("Show Lingering Value", "If shown, you will need to attach a Lingering Value Image to this component. The Lingering Value Image acts as an after-image after a radical change in the Status Bar's value.");
-        public GUIContent showLingeringValue { get { return _showLingeringValue; } }
-
-        private GUIContent _statusTextDisplayType = new GUIContent("Text Display Type", "Uses the provided \"Value Text\" to display a specific type of Text. Some of the Text Display Types use the \"Appended Text\" value somewhere in the string");
-        public GUIContent statusTextDisplayType { get { return _statusTextDisplayType; } }
-
-        private GUIContent _lingeringValueSpeed = new GUIContent("Lingering Value Speed", "This determines how slowly the Lingering Value depletes after a radical shift in values. Anything less than 1 is slower than normal speed.");
         public GUIContent lingeringValueSpeed { get { return _lingeringValueSpeed; } }
+        public int propertySpace { get { return 30; } }
+        public int sectionSpace { get { return 20; } }
+        public GUIContent showLingeringValue { get { return _showLingeringValue; } }
+        public GUIContent statusTextDisplayType { get { return _statusTextDisplayType; } }
     }
 }

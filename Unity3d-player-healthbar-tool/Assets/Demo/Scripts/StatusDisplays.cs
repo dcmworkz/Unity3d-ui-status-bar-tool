@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Lairinus.UI.Status;
+using Lairinus.UI;
 
 public class StatusDisplays : MonoBehaviour
 {
