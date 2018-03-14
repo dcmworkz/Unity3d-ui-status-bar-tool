@@ -23,6 +23,11 @@ namespace Lairinus.UI
             CurrentValueOfMax,
         }
 
+        private void Awake()
+        {
+            Debug.Log(Debugging.DebuggingEnabled.Replace(Debugging.ReplaceString, gameObject.name));
+        }
+
         public List<Sprite> separateSprites = new List<Sprite>();
         [SerializeField] private Image _currentValueImage = null;
         [SerializeField] private bool _enableDebugging = false;
@@ -274,6 +279,7 @@ namespace Lairinus.UI
         public Text valueText { get { return _valueText; } set { _valueText = value; } }
         private class Debugging
         {
+            public const string DebuggingEnabled = "Lairinus.UI.Status.UIStatusBar DEBUGGING ENABLED on GameObject \"" + ReplaceString + "\"\nPlease disable this if you are running into performance issues";
             public const string CurrentValueImageIsNull = "Lairinus.UI.Status.MainStatusBar on GameObject \"" + ReplaceString + "\"- Current Value Image is NULL!\n The Current Value Image is null, but you are using the \"Simple Fill\" Status Bar Type.";
             public const string LingeringValueImageIsNull = "Lairinus.UI.Status.MainStatusBar on GameObject \"" + ReplaceString + "\"- Lingering Value Image is NULL\n The Lingering Value Image is null, but the MainStatusBar is set to display a lingering value. Either assign an Image object or do not flag this to show a lingering value!";
             public const string ReplaceString = "%%custom%%";

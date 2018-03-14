@@ -28,7 +28,6 @@ public class UIStatusBarEditor : Editor
         _util = new GUIUtility();
         ShowSharedConfiguration();
 
-        _object.enableDebugging = EditorGUILayout.Toggle("Enable Debugging", _object.enableDebugging);
         switch (_object.statusBarType)
         {
             case UIStatusBar.StatusBarType.Quantity:
@@ -108,6 +107,7 @@ public class UIStatusBarEditor : Editor
 
     private void ShowSharedConfiguration()
     {
+        _object.enableDebugging = EditorGUILayout.Toggle("Enable Debugging", _object.enableDebugging);
         GUILayout.Space(_util.sectionSpace);
         EditorGUILayout.LabelField("General Fields", EditorStyles.boldLabel);
 
