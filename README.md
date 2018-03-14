@@ -1,34 +1,30 @@
 # Unity3d-player-healthbar-tool
 Introduction
-The User Interface revamp that Unity received in version 4.6 is incredible, and at its' time groundbreaking. It became easy and intuitive to create UI for games. But despite the great advances, there are definitely some limitations. For instance, Button elements can only capture certain events. Moreover, you can also only change the element's color and you only have an option of using a callback with the PointerOnClick event. While this is okay for a basic mock-up, anything further would require custom code and a lot of time from designers and developers.
+Progress bars in Unity3D are fantastic at showing health, experience, loading progress, and many other features. Although they're very useful and almost everyone has at least one, you still need to create some sort of custom code or use a tool. The UIStatusBar tool allows users to show a simple progress bar with sprites, image fill, or even as a quantity tracker. See below for the demo and more details!
 
-Meet the Unity3D UIGraphicEventState Tool
-When applied to a UI Component that has a Graphic component attached (Image or Text), 10 event states become available! Moreover, each Event State allows you to choose any or all of seven transitions to help get your message across right the first time.
+Meet the Unity3D UI Status Bar Tool
+Out of the box, the UI Progress Bar tool contains a lot of great features:
 
-Pointer Events
-Pointer Events are captured by directly interacting with an element. Each event lasts for a default of 0.25 seconds, but this can be changed to fit your needs.
-
-The ten captured Pointer Events are:
-OnNormal - The default state when there is no interaction with the element
-OnHover - Pointer is inside the element's region
-OnPointerEnter - The moment the pointer entered the element's region
-OnPointerExit - The moment the pointer left the element's region
-OnBeginDrag - The pointer was in a "pressed" state and dragged over an element's region
-OnDrag - The pointer is in a "pressed" state and is dragging over an element's region
-OnEndDrag - The pointer was released after being in the "OnDrag" state
-OnPointerDown - The pointer was pressed "down" while inside an element's region
-OnPointerUp - The pointer was released after being pressed down inside an element's region
-OnPointerClick - The pointer was pressed and released inside of an element's region
-Transitions
-A Transition is started when a Pointer Event is started, and ends when a Pointer Event ends. Transitions can be referred to as event callbacks.
-
-The seven available Transitions are:
-Color - Adjusts the element's Text or Image color over the event's duration
-Material - Adjusts the graphic's material
-Rotation - Adjusts the element's world-space rotation over the event's duration
-Scale - Adjusts the element's scale over the event's duration
-SpriteAndFill - Adjusts the Image element's sprite, and fills it over the event's duration (Image element only)
-TextFontSize - Adjusts the Text element's Font Size property over the event's duration (Text element only)
-TextWriteout - Adjusts the Text element's Text property. This can be shown all at once or written out over the event's duration (Text element only)
+3 Progress Bar Types
+Simple Fill
+    Shows basic Images with a fill in order to represent the current/max value.
+    If enabled, "Lingering" values show an after-image in case the value of the progress bar changes dramatically.
+Quantity
+    Can be used to track a basic value or count
+Sprite
+    Can cycle through sprites to display a minimum/maximum/current value.
+Many Text Settings
+    The text can be fully customized in order to provide exactly what you want.
+    Supports a "prefix" and "post-fix" string that can be added before and after the values, respectively
+    Supports showing the UIStatusBar value in five different formats
+        None - No text is displayed
+        Quantity - Text is treated as a quantity, and only the current value is displayed
+        Current Value - Only the Current Value is displayed
+        Current Value Percentage - The Current Value is displayed as a percentage
+        Current Value of Max = The formatting for this type is "CurrentValue + "x" + MaxValue", where X is any string that you want to     specify
+        
 Ease of Use
-The UI Graphic Event State tool is extremely easy to use. To make your life even easier, I created a Custom Inspector that will allow you set each state. Moreover, you can preview each Event state and Transition by clicking the "Set current" and "Set previous" buttons:
+The UI Status Bar is designed to be incredibly easy to use. There are only three steps involved:
+    1. Add the UIStatusBar component to an object
+    2. Fill in the Value Image and Value Text properties, along with all other fields that you want
+    3. Call the UpdateStatusBar() method in-game in Update(), a Coroutine() or even at your own pace to update the Status Bar.
