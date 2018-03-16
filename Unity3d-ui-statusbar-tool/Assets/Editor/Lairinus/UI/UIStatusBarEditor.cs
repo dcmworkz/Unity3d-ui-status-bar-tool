@@ -7,27 +7,13 @@ using Lairinus.UI;
 using UnityEngine.UI;
 
 [CustomEditor(typeof(UIStatusBar))]
+[CanEditMultipleObjects]
 public class UIStatusBarEditor : Editor
 {
-    private Image.OriginHorizontal _horizontalOriginValue = new Image.OriginHorizontal();
-
-    private UIStatusBar _object = null;
-
-    private Image.Origin180 _origin180Value = new Image.Origin180();
-
-    private Image.Origin360 _origin360Value = new Image.Origin360();
-
-    private Image.Origin90 _origin90Value = new Image.Origin90();
-
-    private Image.OriginVertical _originVerticalValue = new Image.OriginVertical();
-
-    private GUIUtility _util = new GUIUtility();
-
     public override void OnInspectorGUI()
     {
-        _util = new GUIUtility();
+        serializedObject.Update();
         ShowSharedConfiguration();
-
         switch (_object.statusBarType)
         {
             case UIStatusBar.StatusBarType.Quantity:
@@ -45,12 +31,59 @@ public class UIStatusBarEditor : Editor
         EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
         GUILayout.Space(_util.sectionSpace);
         ShowTextSettings();
-        serializedObject.Update();
         serializedObject.ApplyModifiedProperties();
     }
+
+    private Image.OriginHorizontal _horizontalOriginValue = new Image.OriginHorizontal();
+
+    private UIStatusBar _object = null;
+
+    private Image.Origin180 _origin180Value = new Image.Origin180();
+
+    private Image.Origin360 _origin360Value = new Image.Origin360();
+
+    private Image.Origin90 _origin90Value = new Image.Origin90();
+
+    private Image.OriginVertical _originVerticalValue = new Image.OriginVertical();
+
+    private SerializedProperty _property_CurrentValueImage = null;
+    private SerializedProperty _property_EnableDebugging = null;
+    private SerializedProperty _property_FillMethod = null;
+    private SerializedProperty _property_LingeringValueImage = null;
+    private SerializedProperty _property_LingeringValueSpeed = null;
+    private SerializedProperty _property_MiddleText = null;
+    private SerializedProperty _property_PostfixText = null;
+    private SerializedProperty _property_PrefixText = null;
+    private SerializedProperty _property_QuantityIcon = null;
+    private SerializedProperty _property_SeparateSprites = null;
+    private SerializedProperty _property_ShowLingeringValue = null;
+    private SerializedProperty _property_StatusBarType = null;
+    private SerializedProperty _property_StatusTextDisplayType = null;
+    private SerializedProperty _property_UsePostfixText = null;
+    private SerializedProperty _property_UsePrefixText = null;
+    private SerializedProperty _property_ValueText = null;
+    private GUIUtility _util = new GUIUtility();
+
     private void OnEnable()
     {
+        _util = new GUIUtility();
         _object = (UIStatusBar)target;
+        _property_SeparateSprites = serializedObject.FindProperty("_separateSprites");
+        _property_StatusBarType = serializedObject.FindProperty("_statusBarType");
+        _property_QuantityIcon = serializedObject.FindProperty("_quantityIcon");
+        _property_EnableDebugging = serializedObject.FindProperty("_enableDebugging");
+        _property_CurrentValueImage = serializedObject.FindProperty("_currentValueImage");
+        _property_ValueText = serializedObject.FindProperty("_valueText");
+        _property_UsePrefixText = serializedObject.FindProperty("_usePrefixText");
+        _property_UsePostfixText = serializedObject.FindProperty("_usePostfixText");
+        _property_PrefixText = serializedObject.FindProperty("_prefixText");
+        _property_PostfixText = serializedObject.FindProperty("_postfixText");
+        _property_FillMethod = serializedObject.FindProperty("_fillMethod");
+        _property_LingeringValueImage = serializedObject.FindProperty("_lingeringValueImage");
+        _property_LingeringValueSpeed = serializedObject.FindProperty("_lingeringValueSpeed");
+        _property_ShowLingeringValue = serializedObject.FindProperty("_showLingeringValue");
+        _property_MiddleText = serializedObject.FindProperty("_middleText");
+        _property_StatusTextDisplayType = serializedObject.FindProperty("_statusTextDisplayType");
     }
 
     private void ShowFillOrigins()
@@ -91,7 +124,7 @@ public class UIStatusBarEditor : Editor
     {
         GUILayout.BeginHorizontal();
         GUILayout.Space(_util.propertySpace);
-        _object.quantityIcon = (Sprite)EditorGUILayout.ObjectField("Display Icon", _object.quantityIcon, typeof(Sprite), true);
+        EditorGUILayout.PropertyField(_property_QuantityIcon, new GUIContent("Quantity Icon"));
         GUILayout.EndHorizontal();
     }
 
@@ -100,27 +133,26 @@ public class UIStatusBarEditor : Editor
         // Separate Sprite
         GUILayout.BeginHorizontal();
         GUILayout.Space(_util.propertySpace);
-        SerializedProperty prop = serializedObject.FindProperty("separateSprites");
-        EditorGUILayout.PropertyField(prop, true);
+        EditorGUILayout.PropertyField(_property_SeparateSprites, true);
         GUILayout.EndHorizontal();
     }
 
     private void ShowSharedConfiguration()
     {
-        _object.enableDebugging = EditorGUILayout.Toggle("Enable Debugging", _object.enableDebugging);
+        EditorGUILayout.PropertyField(_property_EnableDebugging, new GUIContent("Enable Debugging"));
         GUILayout.Space(_util.sectionSpace);
         EditorGUILayout.LabelField("General Fields", EditorStyles.boldLabel);
 
         // Value Image
         GUILayout.BeginHorizontal();
         GUILayout.Space(_util.propertySpace);
-        _object.valueImage = (Image)EditorGUILayout.ObjectField("Value Image", _object.valueImage, typeof(Image), true);
+        EditorGUILayout.PropertyField(_property_CurrentValueImage, new GUIContent("Value Image"));
         GUILayout.EndHorizontal();
 
         // Value Text
         GUILayout.BeginHorizontal();
         GUILayout.Space(_util.propertySpace);
-        _object.valueText = (Text)EditorGUILayout.ObjectField("Value Text", _object.valueText, typeof(Text), true);
+        EditorGUILayout.PropertyField(_property_ValueText, new GUIContent("Value Text"));
         GUILayout.EndHorizontal();
 
         // Spacer
@@ -131,7 +163,7 @@ public class UIStatusBarEditor : Editor
         EditorGUILayout.LabelField("Status Bar Type", EditorStyles.boldLabel);
         GUILayout.BeginHorizontal();
         GUILayout.Space(_util.propertySpace);
-        _object.statusBarType = (UIStatusBar.StatusBarType)GUILayout.SelectionGrid((int)_object.statusBarType, _util.GetStatusBarTypeContent(), 3);
+        EditorGUILayout.PropertyField(_property_StatusBarType, new GUIContent("Status Bar Type"));
         GUILayout.EndHorizontal();
     }
 
@@ -140,7 +172,7 @@ public class UIStatusBarEditor : Editor
         // Fill Method
         GUILayout.BeginHorizontal();
         GUILayout.Space(_util.propertySpace);
-        _object.fillMethod = (Image.FillMethod)EditorGUILayout.EnumPopup(_util.fillMethod, _object.fillMethod);
+        EditorGUILayout.PropertyField(_property_FillMethod, new GUIContent("Fill Method"));
         GUILayout.EndHorizontal();
 
         ShowFillOrigins();
@@ -148,7 +180,7 @@ public class UIStatusBarEditor : Editor
         // Show Lingering Value
         GUILayout.BeginHorizontal();
         GUILayout.Space(_util.propertySpace);
-        _object.showLingeringValue = EditorGUILayout.Toggle(_util.showLingeringValue, _object.showLingeringValue);
+        EditorGUILayout.PropertyField(_property_ShowLingeringValue);
         GUILayout.EndHorizontal();
 
         // Lingering Value Image
@@ -157,16 +189,17 @@ public class UIStatusBarEditor : Editor
             // Lingering Value Image
             GUILayout.BeginHorizontal();
             GUILayout.Space(_util.propertySpace);
-            _object.valueLingeringImage = (Image)EditorGUILayout.ObjectField(_util.lingeringValueImage, _object.valueLingeringImage, typeof(Image), true);
+            EditorGUILayout.PropertyField(_property_LingeringValueImage, new GUIContent("Lingering Value Image"));
             GUILayout.EndHorizontal();
 
             // Lingering Value Speed
             GUILayout.BeginHorizontal();
             GUILayout.Space(_util.propertySpace);
-            _object.lingeringValueSpeed = EditorGUILayout.Slider(_util.lingeringValueSpeed, _object.lingeringValueSpeed, 0, 1);
+            EditorGUILayout.PropertyField(_property_LingeringValueSpeed, new GUIContent("Lingering Value Speed"));
             GUILayout.EndHorizontal();
         }
     }
+
     private void ShowTextSettings()
     {
         EditorGUILayout.LabelField("Text Settings", EditorStyles.boldLabel);
@@ -174,19 +207,19 @@ public class UIStatusBarEditor : Editor
         // Status Text Display Type
         GUILayout.BeginHorizontal();
         GUILayout.Space(_util.propertySpace);
-        _object.statusTextDisplayType = (UIStatusBar.TextDisplayType)EditorGUILayout.EnumPopup(_util.statusTextDisplayType, _object.statusTextDisplayType);
+        EditorGUILayout.PropertyField(_property_StatusTextDisplayType, new GUIContent("Text Display Type"));
         GUILayout.EndHorizontal();
 
         // Use Prefix Text
         GUILayout.BeginHorizontal();
         GUILayout.Space(_util.propertySpace);
-        _object.usePrefixText = EditorGUILayout.Toggle("Use Prefix Text", _object.usePrefixText);
+        EditorGUILayout.PropertyField(_property_UsePrefixText, new GUIContent("Use Prefix Text"));
         GUILayout.EndHorizontal();
 
         // Use Postfix Text
         GUILayout.BeginHorizontal();
         GUILayout.Space(_util.propertySpace);
-        _object.usePostfixText = EditorGUILayout.Toggle("Use Postfix Text", _object.usePostfixText);
+        EditorGUILayout.PropertyField(_property_UsePostfixText, new GUIContent("Use Postfix Text"));
         GUILayout.EndHorizontal();
 
         // Prefix Text
@@ -194,7 +227,7 @@ public class UIStatusBarEditor : Editor
         {
             GUILayout.BeginHorizontal();
             GUILayout.Space(_util.propertySpace);
-            _object.prefixText = EditorGUILayout.TextField("Prefix Text", _object.prefixText);
+            EditorGUILayout.PropertyField(_property_PrefixText, new GUIContent("Prefix Text", "Text that is shown before the value"));
             GUILayout.EndHorizontal();
         }
 
@@ -203,7 +236,7 @@ public class UIStatusBarEditor : Editor
         {
             GUILayout.BeginHorizontal();
             GUILayout.Space(_util.propertySpace);
-            _object.postfixText = EditorGUILayout.TextField("Postfix Text", _object.postfixText);
+            EditorGUILayout.PropertyField(_property_PostfixText, new GUIContent("Postfix Text", "Text that is shown after the value"));
             GUILayout.EndHorizontal();
         }
 
@@ -212,18 +245,22 @@ public class UIStatusBarEditor : Editor
         {
             GUILayout.BeginHorizontal();
             GUILayout.Space(_util.propertySpace);
-            _object.middleText = EditorGUILayout.TextField("Middle Text", _object.middleText);
+            EditorGUILayout.PropertyField(_property_MiddleText, new GUIContent("Middle Text"));
             GUILayout.EndHorizontal();
         }
     }
+
     private class GUIUtility
     {
-        private GUIContent _fillMethod = new GUIContent("Fill Method", "Every image that is being used with the Fill type will have its' type set to fill. This field determines how it will be filled, and will overwrite the Image's value");
-        private GUIContent _fillOrigin = new GUIContent("Fill Origin", "Overwrites the Fill Origin value for the Value and Lingering Value Image Objects");
-        private GUIContent _lingeringValueImage = new GUIContent("Lingering Value Image", "The Lingering Value Image is the bar that sits directly underneath the Status Bar. When the Status Bar's value is set drastically different, you will see the Lingering Value Image as an after-image for a couple of seconds");
-        private GUIContent _lingeringValueSpeed = new GUIContent("Lingering Value Speed", "This determines how slowly the Lingering Value depletes after a radical shift in values. Anything less than 1 is slower than normal speed.");
-        private GUIContent _showLingeringValue = new GUIContent("Show Lingering Value", "If shown, you will need to attach a Lingering Value Image to this component. The Lingering Value Image acts as an after-image after a radical change in the Status Bar's value.");
-        private GUIContent _statusTextDisplayType = new GUIContent("Text Display Type", "Uses the provided \"Value Text\" to display a specific type of Text. Some of the Text Display Types use the \"Appended Text\" value somewhere in the string");
+        public GUIContent fillMethod { get { return _fillMethod; } }
+        public GUIContent fillOrigin { get { return _fillOrigin; } }
+        public GUIContent lingeringValueImage { get { return _lingeringValueImage; } }
+        public GUIContent lingeringValueSpeed { get { return _lingeringValueSpeed; } }
+        public int propertySpace { get { return 30; } }
+        public int sectionSpace { get { return 20; } }
+        public GUIContent showLingeringValue { get { return _showLingeringValue; } }
+        public GUIContent statusTextDisplayType { get { return _statusTextDisplayType; } }
+
         public GUIContent[] GetStatusBarTypeContent()
         {
             List<GUIContent> final = new List<GUIContent>();
@@ -237,6 +274,13 @@ public class UIStatusBarEditor : Editor
 
             return final.ToArray();
         }
+
+        private GUIContent _fillMethod = new GUIContent("Fill Method", "Every image that is being used with the Fill type will have its' type set to fill. This field determines how it will be filled, and will overwrite the Image's value");
+        private GUIContent _fillOrigin = new GUIContent("Fill Origin", "Overwrites the Fill Origin value for the Value and Lingering Value Image Objects");
+        private GUIContent _lingeringValueImage = new GUIContent("Lingering Value Image", "The Lingering Value Image is the bar that sits directly underneath the Status Bar. When the Status Bar's value is set drastically different, you will see the Lingering Value Image as an after-image for a couple of seconds");
+        private GUIContent _lingeringValueSpeed = new GUIContent("Lingering Value Speed", "This determines how slowly the Lingering Value depletes after a radical shift in values. Anything less than 1 is slower than normal speed.");
+        private GUIContent _showLingeringValue = new GUIContent("Show Lingering Value", "If shown, you will need to attach a Lingering Value Image to this component. The Lingering Value Image acts as an after-image after a radical change in the Status Bar's value.");
+        private GUIContent _statusTextDisplayType = new GUIContent("Text Display Type", "Uses the provided \"Value Text\" to display a specific type of Text. Some of the Text Display Types use the \"Appended Text\" value somewhere in the string");
 
         private string GetStatusBarTypeTooltip(UIStatusBar.StatusBarType type)
         {
@@ -255,14 +299,5 @@ public class UIStatusBarEditor : Editor
                     return "";
             }
         }
-
-        public GUIContent fillMethod { get { return _fillMethod; } }
-        public GUIContent fillOrigin { get { return _fillOrigin; } }
-        public GUIContent lingeringValueImage { get { return _lingeringValueImage; } }
-        public GUIContent lingeringValueSpeed { get { return _lingeringValueSpeed; } }
-        public int propertySpace { get { return 30; } }
-        public int sectionSpace { get { return 20; } }
-        public GUIContent showLingeringValue { get { return _showLingeringValue; } }
-        public GUIContent statusTextDisplayType { get { return _statusTextDisplayType; } }
     }
 }
