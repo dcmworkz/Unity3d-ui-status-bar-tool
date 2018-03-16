@@ -28,3 +28,15 @@ The UI Status Bar is designed to be incredibly easy to use. There are only three
     1. Add the UIStatusBar component to an object
     2. Fill in the Value Image and Value Text properties, along with all other fields that you want
     3. Call the UpdateStatusBar() method in-game in Update(), a Coroutine() or even at your own pace to update the Status Bar.
+
+
+========================================
+
+CHANGELOG
+
+========================================
+
+Version 1.0.0 - Initial Release
+Version 1.0.1 - Bug Fixes
+    1. Sometimes when pressing "Play" in the Unity Editor, properties in the inspector would disappear. This is now resolved.
+    2. Sometimes when modifying an instance of a prefab, values would revert to the original prefab object. This is now resolved.
