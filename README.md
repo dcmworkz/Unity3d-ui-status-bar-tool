@@ -36,7 +36,7 @@ CHANGELOG
 
 ========================================
 
-Version 1.0.0 - Initial Release
-Version 1.0.1 - Bug Fixes
+Version 1.0.0 - 03/15/18 - Initial Release
+Version 1.0.1 - 03/16/18 - Bug Fixes
     1. Sometimes when pressing "Play" in the Unity Editor, properties in the inspector would disappear. This is now resolved.
     2. Sometimes when modifying an instance of a prefab, values would revert to the original prefab object. This is now resolved.
