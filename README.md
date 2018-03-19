@@ -40,3 +40,8 @@ Version 1.0.0 - 03/15/18 - Initial Release
 Version 1.0.1 - 03/16/18 - Bug Fixes
     1. Sometimes when pressing "Play" in the Unity Editor, properties in the inspector would disappear. This is now resolved.
     2. Sometimes when modifying an instance of a prefab, values would revert to the original prefab object. This is now resolved.
+Version 1.0.2 - 03/19/18 - Demo update and Code enhancement
+    1. Created a better demo scene that showcases more functionality
+    2. Code
+        a. Renamed internal functions
+        b. Organized the scripts and Unity3D heirarchy
