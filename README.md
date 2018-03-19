@@ -1,4 +1,4 @@
-# Unity3d-player-healthbar-tool
+# Lairinus' UIStateBar Tool
 Introduction
 Progress bars in Unity3D are fantastic at showing health, experience, loading progress, and many other features. Although they're very useful and almost everyone has at least one, you still need to create some sort of custom code or use a tool. The UIStatusBar tool allows users to show a simple progress bar with sprites, image fill, or even as a quantity tracker. See below for the demo and more details!
 
