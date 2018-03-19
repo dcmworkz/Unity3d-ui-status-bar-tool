@@ -2,10 +2,10 @@ WebGL
 SceneListBegin?
 Assets/Demo/Demo.unity
 SceneListEnd?
-364adeb1e47487343c1dd45a4c3127ef Assembly-CSharp.dll:Lairinus.UI.Status.UIStatusBar
+df361c4b967764cba60d893eb9f49d5c Assembly-CSharp.dll:Lairinus.UI.UIStatusBar
 322cb40e1e282f28af980cbef7922a90 UnityEngine.Analytics.dll:UnityEngine.Analytics.AnalyticsEventTracker
 dc07d7ad69b399a46e92c483bf1c04ca UnityEngine.Analytics.dll:UnityEngine.Analytics.AnalyticsTracker
-a2d3cd11d073db8bb3b26e79284a5347 Assembly-CSharp.dll:.StatusDisplays
+9376dd9eab09c8e154121ab57ef08b0b Assembly-CSharp.dll:.StatusBarUIDemo
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Advertisements.dll:UnityEngine.Advertisements.CallbackExecutor
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Advertisements.dll:UnityEngine.Advertisements.Editor.Placeholder
 bc68edb0af574bf79f9550ead8ebae5c UnityEngine.HoloLens.dll:UnityEngine.Audio.AudioSpatializerMicrosoft
