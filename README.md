@@ -1,11 +1,11 @@
 # Lairinus' UIStateBar Tool
-Introduction
+# Introduction
 Progress bars in Unity3D are fantastic at showing health, experience, loading progress, and many other features. Although they're very useful and almost everyone has at least one, you still need to create some sort of custom code or use a tool. The UIStatusBar tool allows users to show a simple progress bar with sprites, image fill, or even as a quantity tracker. See below for the demo and more details!
 
 Meet the Unity3D UI Status Bar Tool
 Out of the box, the UI Progress Bar tool contains a lot of great features:
 
-3 Progress Bar Types
+# 3 Progress Bar Types
 Simple Fill
     Shows basic Images with a fill in order to represent the current/max value.
     If enabled, "Lingering" values show an after-image in case the value of the progress bar changes dramatically.
@@ -23,7 +23,7 @@ Many Text Settings
         Current Value Percentage - The Current Value is displayed as a percentage
         Current Value of Max = The formatting for this type is "CurrentValue + "x" + MaxValue", where X is any string that you want to     specify
         
-Ease of Use
+# Ease of Use
 The UI Status Bar is designed to be incredibly easy to use. There are only three steps involved:
     1. Add the UIStatusBar component to an object
     2. Fill in the Value Image and Value Text properties, along with all other fields that you want
@@ -32,7 +32,7 @@ The UI Status Bar is designed to be incredibly easy to use. There are only three
 
 ========================================
 
-CHANGELOG
+# CHANGELOG
 
 ========================================
 
